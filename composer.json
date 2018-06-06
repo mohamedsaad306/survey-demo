@@ -1,0 +1,11 @@
+{
+	"name": "survey",
+	"require": {
+		"noahbuscher/macaw": "dev-master"
+	},
+	"	autoload": {
+		"psr-4": {
+			"" : ""
+		}
+	}
+}
