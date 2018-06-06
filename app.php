@@ -23,6 +23,7 @@ class App
 		$router = new Router;
 		$router->Route($_SERVER);
 	}
+	
 }
 
  ?>

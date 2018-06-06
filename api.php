@@ -40,26 +40,35 @@ class apiController {
 				break;
 				case 'GetSurveyData':
 				$this->GetSurveyData();
-					break;
+				break;
+
+				case 'validatePrevouslySubmittedSurvey':
+				$this->validatePrevouslySubmittedSurvey();
+				break;
+				
 				default:
 			# code...
 				break;
 			}
 		}		 
 	}
-		//$dbClient->CreateQuestion("English quetion ? ","سؤال بالعربيه ؟ ",1);
-		// $dbClient->CreateSurvey("This iS a new survey");
 
-	public function CreateSurvey(){
-		
-		if (isset($_POST["surveyName"])) {
-			$surveyName =$_POST["surveyName"];
-			$survyId  = $this->dbClient->CreateSurvey($surveyName);
-			JReturn($survyId);
+	function validatePrevouslySubmittedSurvey(){
+		if (isset($_GET['surveyId']) && isset($_GET['clientId']) ) {
+			$surveyId =$_GET['surveyId'];
+			$clientId =$_GET['clientId'];
+			$result = $this->dbClient->validatePrevouslySubmittedSurvey($surveyId,$clientId);
+			JReturn($result);
 		}
-		
 	}
-
+	
+	function GetSurveyData(){
+		if (isset($_GET["surveyid"])) {
+			$survyId  =$_GET["surveyid"];
+			$quetions = $this->dbClient->GetSurveyData($survyId);	
+			JReturn($quetions);
+		}
+	}
 	function GetSurveyQuetions(){
 		
 		if (isset($_GET["surveyid"])) {
@@ -68,13 +77,18 @@ class apiController {
 			JReturn($quetions);
 		}
 	}
-	function GetSurveyData(){
-		if (isset($_GET["surveyid"])) {
-			$survyId  =$_GET["surveyid"];
-			$quetions = $this->dbClient->GetSurveyData($survyId);	
-			JReturn($quetions);
-		}
+
+	function CreateSurvey(){
+		
+		if (isset($_POST["surveyName"])) {
+			$surveyName =$_POST["surveyName"];
+			$survyId  = $this->dbClient->CreateSurvey($surveyName);
+			JReturn($survyId);
+		}		
 	}
+
+	
+	
 } #calss end egere 
 
 

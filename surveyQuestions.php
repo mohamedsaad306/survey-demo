@@ -66,6 +66,7 @@
 			console.log(questionIdToRemove); 
 			if (questionIdToRemove!="") {
 				if (confirm("Please note that all related answeres will be delete, are you sure you sure you want to delete ?")) {
+					$(this).parent().remove();
 				}
 
 			}else{
