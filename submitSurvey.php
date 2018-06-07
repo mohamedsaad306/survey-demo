@@ -27,66 +27,20 @@
 
 				<div class="form-group">
 
-					<h4>This is a quetion </h4>
-					<div class="radio-inline">
-						<label class="radio-inline">
-							<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-							Very Good
-						</label>
-						<label class="radio-inline">
-							<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-							Good
-						</label>
-					</div>
-				</div>
-				
-
-				<div id= "qq" class="form-group"  data-questionLang="ar" data-questionId="" style="display: none;">
 					
-					<h4>This is a quetion  2 </h4>
-					<div class="radio-inline">
-						
-						<label class="radio-inline">
-							<input type="radio" name="optionsRadios1" id="optionsRadios2" value="option1" checked>
-							Very Good
-						</label>
-
-						<label class="radio-inline">
-							<input type="radio" name="optionsRadios1" id="optionsRadios2" value="option1" checked>
-							Good
-						</label>
-
-						<label class="radio-inline">
-							<input type="radio" name="optionsRadios1" id="optionsRadios2" value="option1" checked>
-							Fair
-						</label>
-
-						<label class="radio-inline">
-							<input type="radio" name="optionsRadios1" id="optionsRadios2" value="option1" checked>
-							Poor
-						</label>
-
-						<label class="radio-inline">
-							<input type="radio" name="optionsRadios1" id="optionsRadios2" value="option1" checked>
-							Very Poor 
-						</label>
-					</div>
 
 				</div>
-
-
 			</div>
 		</div>
-	</div>
-	<script type="text/javascript">
+		<script type="text/javascript">
 
-		$(document).ready(function (){
-			getClientSurvey();
-			$('#selectedLanguage').on('change',changeLanguage);
-		});
+			$(document).ready(function (){
+				getClientSurvey();
+				$('#selectedLanguage').on('change',changeLanguage);
+			});
 
-		function changeLanguage(){
-			alert('language changed '+this.value);
+			function changeLanguage(){
+				alert('language changed '+this.value);
 			// clear selected answeres. 
 		}
 
@@ -103,11 +57,11 @@
 				var surveyQuestions = getSurveyQuestions(surveyId);
 					// set client id data attribute for submit.
 					// set survey id data attribute for submit. 
-
+					1	
 				// render questions.
 				if (surveyQuestions && surveyQuestions.length>0) {
 					var surveyAnsweres = getSurveyQuestionsAnsweres(surveyId);
-					renderQuestions(surveyQuestions,surveyQuestions);
+					renderQuestions(surveyQuestions,surveyAnsweres);
 				}
 			}
 			else
@@ -150,10 +104,101 @@
 			return result;	
 		}
 		function renderQuestions(surveyQuestions,surveyAnsweres){
-			
+			console.log("answer");
+			console.log(surveyAnsweres);
 			surveyQuestions.forEach(function(q){
 
 
+				var answersValues =[];
+					surveyAnsweres.forEach(function(a){
+						
+						if (a['questionId']== q['id']) {
+							switch (a['answerString']) {
+								case 'very good':
+								var t ={answerId:a['id'],englishString:"Very Good", arabicString:"جيد جدا" };
+								answersValues.push(t);
+								break;
+
+
+				case 'good':
+								var t ={answerId:a['id'],englishString:"Good", arabicString:"جيد" };
+								answersValues.push(t);
+								break;
+				case 'fair':
+								var t ={answerId:a['id'],englishString:"Fair", arabicString:"مقبول" };
+								answersValues.push(t);
+								break;
+				case 'poor':
+								var t ={answerId:a['id'],englishString:"Poor", arabicString:"ضعيف" };
+								answersValues.push(t);
+								break;
+				case 'very poor':
+								var t ={answerId:a['id'],englishString:"Very Poor", arabicString:"ضعيف جدا" };
+								answersValues.push(t);
+								break;
+								default:
+								break;
+							}
+						}
+					});
+				//	console.log(answersValues);
+
+				$question = `<div id="question-`+q['id']+`" >
+				<div id= "ar-question-`+q['id']+`" class="form-group"  data-questionLang="en" data-questionId="" style="display: none;">
+				<h4>`+q['questionstringen']+`</h4>
+				<div class="radio-inline">
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[0]['answerId']+`" >
+				`+answersValues[0]['englishString']+`
+				</label>
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[1]['answerId']+`" >
+				`+answersValues[1]['englishString']+`
+				</label>
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[2]['answerId']+`" >
+				`+answersValues[2]['englishString']+`
+				</label>
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[3]['answerId']+`" >
+				`+answersValues[3]['englishString']+`
+				</label>
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[4]['answerId']+`" >
+				`+answersValues[4]['englishString']+`
+				</label>
+				</div>
+				</div>
+				</div>
+				<div id= "question-`+q['id']+`" class="form-group"  data-questionLang="ar" data-questionId="" style="display: block;">
+				<h4>`+q['questionstringar']+`</h4>
+				<div class="radio-inline">
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[0]['answerId']+`" >
+				`+answersValues[0]['arabicString']+`
+				</label>
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[1]['answerId']+`" >
+				`+answersValues[1]['arabicString']+`
+				</label>
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[2]['answerId']+`" >
+				`+answersValues[2]['arabicString']+`
+				</label>
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[3]['answerId']+`" >
+				`+answersValues[3]['arabicString']+`
+				</label>
+				<label class="radio-inline">
+				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[4]['answerId']+`" >
+				`+answersValues[4	]['arabicString']+`
+				</label>
+				</div>
+				</div>
+				</div>
+				`
+
+				$("#questions").append($question);
 			});
 		}
 	</script>
