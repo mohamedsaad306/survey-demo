@@ -19,10 +19,23 @@ class dbclient
 		}
 	}
 
+	function getSurveyQuestionsAnsweres($surveyId){
+		$sql = "SELECT `id`, `answerString`, `questionId`, `surveyId` FROM `answers` WHERE `surveyId` ='".$surveyId."'";
+		$result = mysqli_query($this->connection,$sql);
+		if (!$result) {
+			die("read faield" . mysqli_error());
+		} else {
+			$results = array();
+			while ($row=$result->fetch_assoc())
+			{
+				array_push($results, $row);
+			}
+			return$results;
+		}
+	}
+	
 	function validatePrevouslySubmittedSurvey($surveyId,$clientId){
-
-		$sql = "SELECT `userId`, `surveyId`, `answerId` FROM `usersanswers` WHERE `userId` ='".$clientId."' and `surveyId` ='".$surveyId."' ";
-		
+		$sql = "SELECT `userId`, `surveyId`, `answerId` FROM `usersanswers` WHERE `userId` ='".$clientId."' and `surveyId` ='".$surveyId."'";
 		$result = mysqli_query($this->connection,$sql);
 		if (!$result) {
 			die("read faield" . mysqli_error());

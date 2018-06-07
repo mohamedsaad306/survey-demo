@@ -27,6 +27,8 @@ class apiController {
 	{
 		# code...
 		$this->dbClient = new DBClient;
+		// just to generate demo data. [Test] 
+		#$this->dbClient->createquestion("English string  2 ","arabic String 2 ",11);
 	}
 	
 	function Dispatch(){
@@ -45,12 +47,23 @@ class apiController {
 				case 'validatePrevouslySubmittedSurvey':
 				$this->validatePrevouslySubmittedSurvey();
 				break;
-				
+				case 'getSurveyQuestionsAnsweres':
+				$this->getSurveyQuestionsAnsweres();
+				break;
 				default:
 			# code...
 				break;
 			}
 		}		 
+	}
+	function getSurveyQuestionsAnsweres(){
+
+
+		if (isset($_GET['surveyId'])  ) {
+			$surveyId =$_GET['surveyId'];
+			$result = $this->dbClient->getSurveyQuestionsAnsweres($surveyId);
+			JReturn($result);
+		}
 	}
 
 	function validatePrevouslySubmittedSurvey(){
@@ -61,7 +74,7 @@ class apiController {
 			JReturn($result);
 		}
 	}
-	
+
 	function GetSurveyData(){
 		if (isset($_GET["surveyid"])) {
 			$survyId  =$_GET["surveyid"];
@@ -71,15 +84,14 @@ class apiController {
 	}
 	function GetSurveyQuetions(){
 		
-		if (isset($_GET["surveyid"])) {
-			$survyId  =$_GET["surveyid"];
+		if (isset($_GET["surveyId"])) {
+			$survyId  =$_GET["surveyId"];
 			$quetions = $this->dbClient->GetSurveyQuetions($survyId);	
 			JReturn($quetions);
 		}
 	}
 
 	function CreateSurvey(){
-		
 		if (isset($_POST["surveyName"])) {
 			$surveyName =$_POST["surveyName"];
 			$survyId  = $this->dbClient->CreateSurvey($surveyName);

@@ -1,4 +1,13 @@
 todo 
-- implement delete quetion logic. 
+
 - implement save logic to update old questions and create new questions.
+	- 
 - submit answer logic.
+
+do not forget bugs C:
+- in submit survey page remember to clear selecetd answeres on change of language. 
+- 
+
+
+not implemented features. 
+-  delete question logic.
