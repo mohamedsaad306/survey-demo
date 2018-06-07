@@ -17,8 +17,8 @@
 		<div id="info">	
 		</div>
 		<select class="form-control" id="selectedLanguage" data-width="fit">
-			<option  value="en">English</option>
-			<option value="ar" >العربية</option>
+			<option  value="en" >English</option>
+			<option value="ar" selected>العربية</option>
 		</select>
 
 		<div id="survey" data-id="" data-clientId="" >
@@ -40,8 +40,9 @@
 			});
 
 			function changeLanguage(){
-				alert('language changed '+this.value);
-			// clear selected answeres. 
+				
+			 $('[data-questionLang]').css('display','none'); 
+			$('[data-questionLang|='+this.value+']').css('display','block');	 
 		}
 
 		function getClientSurvey() {
@@ -110,41 +111,41 @@
 
 
 				var answersValues =[];
-					surveyAnsweres.forEach(function(a){
-						
-						if (a['questionId']== q['id']) {
-							switch (a['answerString']) {
-								case 'very good':
-								var t ={answerId:a['id'],englishString:"Very Good", arabicString:"جيد جدا" };
-								answersValues.push(t);
-								break;
+				surveyAnsweres.forEach(function(a){
+
+					if (a['questionId']== q['id']) {
+						switch (a['answerString']) {
+							case 'very good':
+							var t ={answerId:a['id'],englishString:"Very Good", arabicString:"جيد جدا" };
+							answersValues.push(t);
+							break;
 
 
-				case 'good':
-								var t ={answerId:a['id'],englishString:"Good", arabicString:"جيد" };
-								answersValues.push(t);
-								break;
-				case 'fair':
-								var t ={answerId:a['id'],englishString:"Fair", arabicString:"مقبول" };
-								answersValues.push(t);
-								break;
-				case 'poor':
-								var t ={answerId:a['id'],englishString:"Poor", arabicString:"ضعيف" };
-								answersValues.push(t);
-								break;
-				case 'very poor':
-								var t ={answerId:a['id'],englishString:"Very Poor", arabicString:"ضعيف جدا" };
-								answersValues.push(t);
-								break;
-								default:
-								break;
-							}
+							case 'good':
+							var t ={answerId:a['id'],englishString:"Good", arabicString:"جيد" };
+							answersValues.push(t);
+							break;
+							case 'fair':
+							var t ={answerId:a['id'],englishString:"Fair", arabicString:"مقبول" };
+							answersValues.push(t);
+							break;
+							case 'poor':
+							var t ={answerId:a['id'],englishString:"Poor", arabicString:"ضعيف" };
+							answersValues.push(t);
+							break;
+							case 'very poor':
+							var t ={answerId:a['id'],englishString:"Very Poor", arabicString:"ضعيف جدا" };
+							answersValues.push(t);
+							break;
+							default:
+							break;
 						}
-					});
+					}
+				});
 				//	console.log(answersValues);
 
 				$question = `<div id="question-`+q['id']+`" >
-				<div id= "ar-question-`+q['id']+`" class="form-group"  data-questionLang="en" data-questionId="" style="display: none;">
+				<div id= "question-`+q['id']+`" class="form-group"  data-questionLang="en" data-questionId="" style="display: none;">
 				<h4>`+q['questionstringen']+`</h4>
 				<div class="radio-inline">
 				<label class="radio-inline">
