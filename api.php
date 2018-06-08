@@ -53,15 +53,23 @@ class apiController {
 				case 'createNewQuestions':
 				$this->createNewQuestions();
 				break;
-
 				case 'submitClientAnswers':
 				$this->submitClientAnswers();
 				break;
+
+				case 'getAllSurveyesList':
+				$this->getAllSurveyesList();
+				break;
+
 				default:
-			# code...
 				break;	
 			}
 		}		 
+	}
+	function getAllSurveyesList()
+	{
+			$result = $this->dbClient->getAllSurveyesList($_POST);
+			JReturn($result);
 	}
 	function submitClientAnswers()
 	{

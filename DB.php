@@ -18,6 +18,21 @@ class dbclient
 			die("database connection error: " . mysql_errno());
 		}
 	}
+	function getAllSurveyesList()
+	{
+		$sql = "SELECT * FROM `surveys` WHERE 1";
+		$result = mysqli_query($this->connection,$sql);
+		if (!$result) {
+			die("read faield" . mysqli_error($this->connection));
+		} else {
+			$results = array();
+			while ($row=$result->fetch_assoc())
+			{
+				array_push($results, $row);
+			}
+			return$results;
+		}
+	}
 	function submitClientAnswers($postData){
 		// $data = json_decode($postData,true);
 		$data =$postData;

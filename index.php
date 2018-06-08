@@ -6,20 +6,28 @@ require_once("router.php");
 <html>
 <head>
 	<title>Servey System</title>
-	<link href="./css/bootstrap-Sandstone.min.css" rel="stylesheet" />
-	<script src="./js/jquery-3.2.1.min.js">;</script>
+	<link href="css/bootstrap.css" rel="stylesheet" />
 </head>
 
 <body>
 	<div class="container">
-		<form action="api.php?surveyid=1" method="POST">
-			<div class="form-group">
-				<input id= "input-arabicText" type="text" name="" class="form-control">
-				<input id= "input-englishText" type="text" name="" class="form-control">
-				<button type="submit" value="submit" class="btn btn-primary">Submit</button>
-			</div>
-		</form>
+		<br>
+		<div>
+
+			<!-- Nav tabs -->
+			<ul class="nav nav-pills" role="tablist">
+				<li role="presentation" ><a href="./surveys.php" aria-controls="home" >Surveys </a></li>
+				<li role="presentation"><a href="#profile" aria-controls="profile" >Profile</a></li>
+				<li role="presentation"><a href="#messages" aria-controls="messages" >Messages</a></li>
+				<li role="presentation"><a href="#settings" aria-controls="settings" >Settings</a></li>
+			</ul>
+
+		
+
+		</div>
 	</div>
+	<script src="./js/jquery-3.2.1.min.js">;</script>
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
 </body>
 
 </html>
