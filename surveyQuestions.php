@@ -11,12 +11,12 @@
 <body>
 	<br>
 	<div class="container ">
-		
+		<div id="info">	
+		</div>
 		<div id="survey" data-id="" >
 			<h3 id="survey-name"> </h3>
 			<button id="add-question" class="btn btn-primary">Add Question</button>
 			<button id="save-survey" class="btn btn-primary">Save</button>
-
 			<div id="questions" class="col-md-6">
 			</div>
 		</div>
@@ -30,6 +30,7 @@
 			if (surveyid) {
 				var surveyData = getSurveyData(surveyid,setSurveyData);
 				var surveyQuetions = getSurveyQuestions(surveyid,RenderQuestions);
+				$('#survey').data('surveyId',surveyid);
 			}
 			$("[data-deleteId]").click(deleteQuestion);
 		});// end ready 
@@ -38,21 +39,55 @@
 		$('#save-survey').click(saveSurvey);
 		function saveSurvey() {
 			// get new questions
+			// alert("save is clicked");
+			// console.log($('[data-newQuestion]'));
 
+			var questions = []; 
+			
+			var surveyId= $('#survey').data('surveyId');
+			var groups = $('[data-newQuestion]');
+			groups.toArray().forEach(function(g){
+				var enString = $('[name=englishQuestion]',g)[0].value;
+				var arString = $('[name=arabicQuestion]',g)[0].value;
+				// console.log({ enQuestion:enString,arQuestion:arString,surveyId:surveyId});
+				questions.push({ enQuestion:enString,arQuestion:arString,surveyId:surveyId});
+			});
+			console.log(questions);
 			// post to server  
+			if (questions.length>0) 
+				craeteNewQuestions(questions);
+		}
+
+		function craeteNewQuestions(questions,successCallback) {
+			var questions =JSON.stringify(questions) ;
+			var req = $.ajax({
+				url: "api.php?action=createNewQuestions",
+				type: "POST",
+				data:{questions:questions},
+				async: false,
+				success:function (response) {
+					console.log('success');
+					console.log(response);
+				}
+			});
 		}
 
 		$('#add-question').click(addNewQuestion);
 		function addNewQuestion (){
-			$question = `<div class=" well">
+			$question = `<div class=" well" data-newQuestion>
+
 			<div class="form-group" >
+			
 			<label for="englishQuestion-new-`+addNewQuestionsCount+`">English Question <span class="label label-success">New</span> </label> 
 			<input type="text" class="form-control" id="englishQuestion-new-`+addNewQuestionsCount+`" value=""  name="englishQuestion" data-id="">
 			</div>
+			
 			<div class="form-group">
+
 			<label for="arabicQuestion-new-`+addNewQuestionsCount+`">Arabic Question</label>
 			<input type="text" class="form-control" id="arabicQuestion-new-`+addNewQuestionsCount+`" placeholder="English Question" name="arabicQuestion" data-id=""  value="">
 			</div>
+			
 			<span class="btn btn-danger" data-deleteId>Remove </span>
 			</div>`;
 			$('#questions').prepend($question);
@@ -76,7 +111,8 @@
 
 		function RenderQuestions(questionsArray) {
 
-			questionsArray = JSON.parse(questionsArray);
+			if (questionsArray) {
+				questionsArray = JSON.parse(questionsArray);
 			// 	console.log("data");
 
 			questionsArray.forEach(function(q){
@@ -85,36 +121,38 @@
 				<div class="form-group">
 
 				<label for="englishQuestion-`+q['id']+`">English Question </label>
-				<input type="text" class="form-control" id="englishQuestion-`+q['id']+`" value="`+q['questionStringEN']+`"  name="englishQuestion" data-id="`+q['id']+`">
+				<input type="text" class="form-control" id="englishQuestion-`+q['id']+`" value="`+q['questionstringen']+`"  name="englishQuestion" data-id="`+q['id']+`">
 				</div>
 
 				<div class="form-group">
 				<label for="arabicQuestion-`+q['id']+`">Arabic Question</label>
-				<input type="text" class="form-control" id="arabicQuestion-`+q['id']+`" placeholder="English Question" name="arabicQuestion" data-id="`+q['id']+`"  value="`+q['questionStringAR']+`">
+				<input type="text" class="form-control" id="arabicQuestion-`+q['id']+`" placeholder="English Question" name="arabicQuestion" data-id="`+q['id']+`"  value="`+q['questionstringar']+`">
 				</div>
 				<span class="btn btn-danger" data-deleteId="`+q['id']+`">Remove </span>
 				</div	>`;
 				$('#questions').append($question);
+				// $question= undefined;
 			});
 			$("[data-deleteId]").click(deleteQuestion);
 		}
+	}
 
-		function getSurveyQuestions(surveyid,successCallback){
-			var result ; 
-			
-			var $form = $(this);
-			var $inputs = $form.find("input, select, button, textarea");
-			var serializedData = $form.serialize();
-			$inputs.prop("disabled", true);
+	function getSurveyQuestions(surveyid,successCallback){
+		var result ; 
 
-			request = $.ajax({
-				url: "api.php?action=GetSurvey&surveyid="+surveyid,
-				type: "GET",
-				data: serializedData
-			});
+		var $form = $(this);
+		var $inputs = $form.find("input, select, button, textarea");
+		var serializedData = $form.serialize();
+		$inputs.prop("disabled", true);
+
+		request = $.ajax({
+			url: "api.php?action=GetSurvey&surveyid="+surveyid,
+			type: "GET",
+			data: serializedData
+		});
 
 
-			request.done(function (response, textStatus, jqXHR){
+		request.done(function (response, textStatus, jqXHR){
 			        // Log a message to the console
 			       // console.log(response);
 			        // alert(response);
@@ -125,22 +163,22 @@
 			        }
 			    });
 
-			request.fail(function (jqXHR, textStatus, errorThrown){
-				console.error(
-					"The following error occurred: "+textStatus, errorThrown	
-					);
-			});
+		request.fail(function (jqXHR, textStatus, errorThrown){
+			console.error(
+				"The following error occurred: "+textStatus, errorThrown	
+				);
+		});
 
-			request.always(function () {
+		request.always(function () {
 			        // Reenable the inputs
 			        $inputs.prop("disabled", false);
 			    });		
-			return result;
-		}
+		return result;
+	}
 
-		function setSurveyData(data) {
-			$('#survey').data('id', JSON.parse(data)[0]['id']);			
-			$('#survey-name').text("Survey Name: "+ JSON.parse(data)[0]['name']);			
+	function setSurveyData(data) {
+		$('#survey').data('id', JSON.parse(data)[0]['id']);			
+		$('#survey-name').text("Survey Name: "+ JSON.parse(data)[0]['name']);			
 			// console.log(JSON.parse(data)[0]['id']);
 		}
 

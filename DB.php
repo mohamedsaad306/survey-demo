@@ -18,7 +18,15 @@ class dbclient
 			die("database connection error: " . mysql_errno());
 		}
 	}
-
+	function createNewQuestions($_questions)
+	{
+		$questions = json_decode ($_questions,true);
+		foreach ($questions as $q) {
+			print_r($questions);
+			// echo $q['enQuestion'];
+			 $this->createquestion($q['enQuestion'],$q['arQuestion'], $q['surveyId'] );
+		}
+	}
 	function getSurveyQuestionsAnsweres($surveyId){
 		$sql = "SELECT `id`, `answerString`, `questionId`, `surveyId` FROM `answers` WHERE `surveyId` ='".$surveyId."'";
 		$result = mysqli_query($this->connection,$sql);
@@ -33,7 +41,7 @@ class dbclient
 			return$results;
 		}
 	}
-	
+
 	function validatePrevouslySubmittedSurvey($surveyId,$clientId){
 		$sql = "SELECT `userId`, `surveyId`, `answerId` FROM `usersanswers` WHERE `userId` ='".$clientId."' and `surveyId` ='".$surveyId."'";
 		$result = mysqli_query($this->connection,$sql);
@@ -58,7 +66,7 @@ class dbclient
 		} else {
 			$questionid = mysqli_insert_id($this->connection);
 			$this->createtypicalansweresforquetion($questionid,$surveyid);
-			print_r($result);
+			//print_r($result);
 		}
 	}
 

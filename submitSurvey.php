@@ -41,17 +41,17 @@
 
 			function changeLanguage(){
 				
-			 $('[data-questionLang]').css('display','none'); 
-			$('[data-questionLang|='+this.value+']').css('display','block');	 
-		}
-
-		function getClientSurvey() {
-			var clientId = getParameterByName('clientId');
-			var surveyId = getParameterByName('surveyId');
-			if (!surveyId ||!clientId ) {				
-				$('#info').append('<div class="alert alert-warning" role="alert"> incorrect survey url, please contact System administrator.</div>');
-				return;
+				$('[data-questionLang]').css('display','none'); 
+				$('[data-questionLang|='+this.value+']').css('display','block');	 
 			}
+
+			function getClientSurvey() {
+				var clientId = getParameterByName('clientId');
+				var surveyId = getParameterByName('surveyId');
+				if (!surveyId ||!clientId ) {				
+					$('#info').append('<div class="alert alert-warning" role="alert"> incorrect survey url, please contact System administrator.</div>');
+					return;
+				}
 
 			// check if user has previously submitted this survey.
 			if (!validatePrevouslySubmittedSurvey(clientId,surveyId)) {				

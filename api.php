@@ -50,12 +50,25 @@ class apiController {
 				case 'getSurveyQuestionsAnsweres':
 				$this->getSurveyQuestionsAnsweres();
 				break;
+				case 'createNewQuestions':
+				$this->createNewQuestions();
+				break;
 				default:
 			# code...
-				break;
+				break;	
 			}
 		}		 
 	}
+	function createNewQuestions(){
+		// print_r($_POST);
+		
+		if (isset($_POST['questions'])) {
+			print_r($_POST['questions']);
+			$result = $this->dbClient->createNewQuestions($_POST['questions']);
+			JReturn($result);
+		}
+	}
+
 	function getSurveyQuestionsAnsweres(){
 
 
@@ -84,8 +97,8 @@ class apiController {
 	}
 	function GetSurveyQuetions(){
 		
-		if (isset($_GET["surveyId"])) {
-			$survyId  =$_GET["surveyId"];
+		if (isset($_GET["surveyId"])||isset($_GET["surveyid"])) {
+			$survyId  =isset($_GET["surveyId"])? $_GET["surveyId"] : $_GET["surveyid"];
 			$quetions = $this->dbClient->GetSurveyQuetions($survyId);	
 			JReturn($quetions);
 		}
