@@ -53,11 +53,22 @@ class apiController {
 				case 'createNewQuestions':
 				$this->createNewQuestions();
 				break;
+
+				case 'submitClientAnswers':
+				$this->submitClientAnswers();
+				break;
 				default:
 			# code...
 				break;	
 			}
 		}		 
+	}
+	function submitClientAnswers()
+	{
+		if (isset($_POST['clientId']) && isset($_POST['surveyId']) ) {
+			$result = $this->dbClient->submitClientAnswers($_POST);
+			JReturn($result);
+		}
 	}
 	function createNewQuestions(){
 		// print_r($_POST);

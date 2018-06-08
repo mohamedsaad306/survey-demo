@@ -16,28 +16,69 @@
 	<div class="container ">
 		<div id="info">	
 		</div>
-		<select class="form-control" id="selectedLanguage" data-width="fit">
-			<option  value="en" >English</option>
-			<option value="ar" selected>العربية</option>
-		</select>
 
 		<div id="survey" data-id="" data-clientId="" >
+			<select class="form-control" id="selectedLanguage" data-width="fit">
+				<option  value="en" >English</option>
+				<option value="ar" selected>العربية</option>
+			</select>
 			<h3 id="survey-name"></h3>
-			<div id="questions" class="col-md-6">
 
-				<div class="form-group">
+			<form action="#" method="POST" id= "submit-answers">
+				
+				<input id ="hiddenClientId"  type="hidden" name="clientId" value="">
+				<input id ="hiddenSurveyId" type="hidden" name="surveyId" value="">
 
-					
+				<div id="questions" class="col-md-6">
+					<div class="form-group">
+					</div>
 
 				</div>
-			</div>
+				<button class="btn btn-primary" type="submit">Submit</button>
+			</form>
+
 		</div>
+
 		<script type="text/javascript">
 
 			$(document).ready(function (){
 				getClientSurvey();
 				$('#selectedLanguage').on('change',changeLanguage);
+
+
+				$("#submit-answers").submit(submitAnswers);
+
 			});
+
+			function submitAnswers(event){
+				event.preventDefault();
+
+				var $form = $(this);
+				var $inputs = $form.find("input, select, button, textarea");
+				var serializedData = $form.serialize();
+				$inputs.prop("disabled", true);
+
+				request = $.ajax({
+					url: "api.php?action=submitClientAnswers",
+					type: "POST",
+					data: serializedData, 
+					success:function (response, textStatus, jqXHR){
+						console.log(response);
+						//alert(response);
+						if (response) {
+							location.reload();
+						}
+					},
+					fail:function(jqXHR, textStatus, errorThrown){
+
+						console.error(
+							"The following error occurred: "+
+							textStatus, errorThrown	
+							);
+					}
+				});
+
+			}
 
 			function changeLanguage(){
 				
@@ -56,18 +97,22 @@
 			// check if user has previously submitted this survey.
 			if (!validatePrevouslySubmittedSurvey(clientId,surveyId)) {				
 				var surveyQuestions = getSurveyQuestions(surveyId);
-					// set client id data attribute for submit.
-					// set survey id data attribute for submit. 
-					1	
 				// render questions.
 				if (surveyQuestions && surveyQuestions.length>0) {
 					var surveyAnsweres = getSurveyQuestionsAnsweres(surveyId);
+					
+					// set client id data attribute for submit.
+					// set survey id data attribute for submit. 
+					$('#hiddenSurveyId').val(surveyId);
+					$('#hiddenClientId').val(clientId);
+
 					renderQuestions(surveyQuestions,surveyAnsweres);
 				}
 			}
 			else
 			{
-				$('#info').append('<div class="alert alert-success" role="alert"> Thanks for your precious giving us your feedback, Survey submitted successfully.</div>');
+				$('#info').append('<div class="alert alert-success" role="alert"> Thanks for your feedback, Survey submitted successfully.</div>');
+				$('#survey').css('display','none');
 			}
 		}
 
@@ -119,8 +164,6 @@
 							var t ={answerId:a['id'],englishString:"Very Good", arabicString:"جيد جدا" };
 							answersValues.push(t);
 							break;
-
-
 							case 'good':
 							var t ={answerId:a['id'],englishString:"Good", arabicString:"جيد" };
 							answersValues.push(t);
@@ -149,23 +192,23 @@
 				<h4>`+q['questionstringen']+`</h4>
 				<div class="radio-inline">
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[0]['answerId']+`" >
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[0]['answerId']+`" >
 				`+answersValues[0]['englishString']+`
 				</label>
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[1]['answerId']+`" >
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[1]['answerId']+`" >
 				`+answersValues[1]['englishString']+`
 				</label>
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[2]['answerId']+`" >
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[2]['answerId']+`" >
 				`+answersValues[2]['englishString']+`
 				</label>
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[3]['answerId']+`" >
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[3]['answerId']+`" >
 				`+answersValues[3]['englishString']+`
 				</label>
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[4]['answerId']+`" >
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[4]['answerId']+`" >
 				`+answersValues[4]['englishString']+`
 				</label>
 				</div>
@@ -175,24 +218,24 @@
 				<h4>`+q['questionstringar']+`</h4>
 				<div class="radio-inline">
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[0]['answerId']+`" >
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[0]['answerId']+`" >
 				`+answersValues[0]['arabicString']+`
 				</label>
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[1]['answerId']+`" >
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[1]['answerId']+`" >
 				`+answersValues[1]['arabicString']+`
 				</label>
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[2]['answerId']+`" >
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[2]['answerId']+`" >
 				`+answersValues[2]['arabicString']+`
 				</label>
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[3]['answerId']+`" >
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[3]['answerId']+`" >
 				`+answersValues[3]['arabicString']+`
 				</label>
 				<label class="radio-inline">
-				<input type="radio" name="answer-`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[4]['answerId']+`" >
-				`+answersValues[4	]['arabicString']+`
+				<input type="radio" name="`+q['id']+`" id="answer-`+q['id']+`" value="`+answersValues[4]['answerId']+`" >
+				`+answersValues[4]['arabicString']+`
 				</label>
 				</div>
 				</div>

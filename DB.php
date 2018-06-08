@@ -18,6 +18,54 @@ class dbclient
 			die("database connection error: " . mysql_errno());
 		}
 	}
+	function submitClientAnswers($postData){
+		// $data = json_decode($postData,true);
+		$data =$postData;
+		
+		$clientId; 
+		$surveyId;
+
+		foreach ($data as $key => $value) {
+			if ($key=='clientId') {
+				$clientId = $value; 
+			}elseif ($key=='surveyId') {
+				$surveyId= $value;
+			}else{
+				//key is question id , and value is answer value 
+				$this->updateAnswer($key, $value);
+			}
+		}
+		// save client submition to this survey to avoid submitting again 
+		$saveId =  $this->saveClientSubmition($clientId,$surveyId);
+		$result = ($saveId!=null);
+		return $result;
+	}
+	function saveClientSubmition($clientId,$surveyId){
+		$sql = "INSERT INTO `usersanswers` ( `userId`, `surveyId`) VALUES ( '".$clientId."', '".$surveyId."');";
+		$result = mysqli_query($this->connection,$sql);
+		if (!$result) {
+			die("insertion faield" . mysqli_error($this->connection));
+		} else {
+			$id= mysqli_insert_id($this->connection);
+			return $id;
+		}
+	}
+
+	function updateAnswer($questionId, $answerId){
+	// update answeres where question id = 1 
+		$sql = "UPDATE `answers` SET `answerCount`=`answerCount`+1 WHERE  `questionId` = '".$questionId."' and `id` =".$answerId."";
+
+		$result = mysqli_query($this->connection,$sql);
+		
+		if (!$result) {
+			//echo ;
+			die($sql."__". mysqli_error($this->connection));
+		} else {
+			return true;
+		}
+	}
+
+
 	function createNewQuestions($_questions)
 	{
 		$resultIds = [];
@@ -33,7 +81,7 @@ class dbclient
 		$sql = "SELECT `id`, `answerString`, `questionId`, `surveyId` FROM `answers` WHERE `surveyId` ='".$surveyId."'";
 		$result = mysqli_query($this->connection,$sql);
 		if (!$result) {
-			die("read faield" . mysqli_error());
+			die("read faield" . mysqli_error($this->connection));
 		} else {
 			$results = array();
 			while ($row=$result->fetch_assoc())
@@ -45,10 +93,10 @@ class dbclient
 	}
 
 	function validatePrevouslySubmittedSurvey($surveyId,$clientId){
-		$sql = "SELECT `userId`, `surveyId`, `answerId` FROM `usersanswers` WHERE `userId` ='".$clientId."' and `surveyId` ='".$surveyId."'";
+		$sql = "SELECT `userId`, `surveyId` FROM `usersanswers` WHERE `userId` ='".$clientId."' and `surveyId` ='".$surveyId."'";
 		$result = mysqli_query($this->connection,$sql);
 		if (!$result) {
-			die("read faield" . mysqli_error());
+			die("read faield" . mysqli_error($this->connection));
 		} else {
 			$results = array();
 			while ($row=$result->fetch_assoc())
@@ -64,7 +112,7 @@ class dbclient
 		$result = mysqli_query($this->connection,$query);
 
 		if (!$result) {
-			die("insertion faield" . mysqli_error());
+			die("insertion faield" . mysqli_error($this->connection));
 		} else {
 			$questionid = mysqli_insert_id($this->connection);
 			$this->createtypicalansweresforquetion($questionid,$surveyid);
@@ -80,7 +128,7 @@ class dbclient
 		$result = mysqli_query($this->connection,$query);
 		
 		if (!$result) {
-			die("insertion faield" . mysqli_error());
+			die("insertion faield" . mysqli_error($this->connection));
 		} else {
 			$last_id = mysqli_insert_id($this->connection);
 			return $last_id;
@@ -92,7 +140,7 @@ class dbclient
 		
 		$result = mysqli_query($this->connection,$query);
 		if (!$result) {
-			die("insertion faield" . mysqli_error());
+			die("insertion faield" . mysqli_error($this->connection));
 		} else {
 			print_r($result);
 		}
@@ -111,7 +159,7 @@ class dbclient
 
 		$result = mysqli_query($this->connection,$questionsquery);
 		if (!$result) {
-			die("read faield" . mysqli_error());
+			die("read faield" . mysqli_error($this->connection));
 		} else {
 			$results = array();
 			while ($row=$result->fetch_assoc())
@@ -126,7 +174,7 @@ class dbclient
 		$questionsquery = "select * from `surveys` where `id`='".$surveyid."'";
 		$result = mysqli_query($this->connection,$questionsquery);
 		if (!$result) {
-			die("read faield" . mysqli_error());
+			die("read faield" . mysqli_error($this->connection));
 		} else {
 			$results = array();
 			while ($row=$result->fetch_assoc())
