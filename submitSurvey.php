@@ -17,14 +17,22 @@
 		<div id="info">	
 		</div>
 
-		<div id="survey" data-id="" data-clientId="" >
+		<!-- <div id="survey" data-id="" data-clientId="" >
 			<select class="form-control" id="selectedLanguage" data-width="fit">
 				<option  value="en" >English</option>
 				<option value="ar" selected>العربية</option>
-			</select>
-			<h3 id="survey-name"></h3>
+			</select> -->
 
-			<form action="#" method="POST" id= "submit-answers">
+			<div class="panel" id="languagePanel">
+				<h4>Sleect Language</h4>
+				<button id="selectedLanguageBtnEN" type="button" class="btn btn-default" value="en">English</button>
+				<button id="selectedLanguageBtnAR"  type="button" class="btn btn-default" value="ar">العربية</button>
+			</div>
+
+
+			<h3 id="survey-name"></h3>
+			
+			<form action="#" method="POST" id= "submit-answers" style="display:none;">
 				
 				<input id ="hiddenClientId"  type="hidden" name="clientId" value="">
 				<input id ="hiddenSurveyId" type="hidden" name="surveyId" value="">
@@ -44,10 +52,9 @@
 			$(document).ready(function (){
 				getClientSurvey();
 				$('#selectedLanguage').on('change',changeLanguage);
-
-
+				$('#selectedLanguageBtnEN').on('click',changeLanguage);
+				$('#selectedLanguageBtnAR').on('click',changeLanguage);
 				$("#submit-answers").submit(submitAnswers);
-
 			});
 
 			function submitAnswers(event){
@@ -77,13 +84,14 @@
 							);
 					}
 				});
-
 			}
 
 			function changeLanguage(){
-				
-				$('[data-questionLang]').css('display','none'); 
+				// $('[data-questionLang]').css('display','none'); 
 				$('[data-questionLang|='+this.value+']').css('display','block');	 
+				$('#submit-answers').css('display','block');	 
+				$('#selectLanguage').css('display','none');	
+				$('#languagePanel').css('display','none'); 
 			}
 
 			function getClientSurvey() {
@@ -214,7 +222,7 @@
 				</div>
 				</div>
 				</div>
-				<div id= "question-`+q['id']+`" class="form-group"  data-questionLang="ar" data-questionId="" style="display: block;">
+				<div id= "question-`+q['id']+`" class="form-group"  data-questionLang="ar" data-questionId="" style="display: none;">
 				<h4>`+q['questionstringar']+`</h4>
 				<div class="radio-inline">
 				<label class="radio-inline">
