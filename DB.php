@@ -39,24 +39,27 @@ class dbclient
 		
 		$clientId; 
 		$surveyId;
+		$comment;
 
 		foreach ($data as $key => $value) {
 			if ($key=='clientId') {
 				$clientId = $value; 
 			}elseif ($key=='surveyId') {
 				$surveyId= $value;
-			}else{
+			}else if ($key=='comment'){
+				$comment= $value;
+			}else {
 				//key is question id , and value is answer value 
 				$this->updateAnswer($key, $value);
 			}
 		}
 		// save client submition to this survey to avoid submitting again 
-		$saveId =  $this->saveClientSubmition($clientId,$surveyId);
+		$saveId =  $this->saveClientSubmition($clientId,$surveyId,$comment);
 		$result = ($saveId!=null);
 		return $result;
 	}
-	function saveClientSubmition($clientId,$surveyId){
-		$sql = "INSERT INTO `usersanswers` ( `userId`, `surveyId`) VALUES ( '".$clientId."', '".$surveyId."');";
+	function saveClientSubmition($clientId,$surveyId,$comment){
+		$sql = "INSERT INTO `usersanswers` ( `userId`, `surveyId`,`comment`) VALUES ( '".$clientId."', '".$surveyId."' ,'".$comment."' );";
 		$result = mysqli_query($this->connection,$sql);
 		if (!$result) {
 			die("insertion faield" . mysqli_error($this->connection));

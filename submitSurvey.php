@@ -23,7 +23,7 @@
 				<option value="ar" selected>العربية</option>
 			</select> -->
 
-			<div class="panel" id="languagePanel">
+			<div class="panel" id="languagePanel" style="display: none;">
 				<h4>Sleect Language</h4>
 				<button id="selectedLanguageBtnEN" type="button" class="btn btn-default" value="en">English</button>
 				<button id="selectedLanguageBtnAR"  type="button" class="btn btn-default" value="ar">العربية</button>
@@ -113,7 +113,7 @@
 					// set survey id data attribute for submit. 
 					$('#hiddenSurveyId').val(surveyId);
 					$('#hiddenClientId').val(clientId);
-
+$('#languagePanel').css('display','block');
 					renderQuestions(surveyQuestions,surveyAnsweres);
 				}
 			}
@@ -252,6 +252,9 @@
 
 				$("#questions").append($question);
 			});
+			$comment= '<textarea class="form-control" rows="3" name="comment"></textarea>';
+				$("#questions").append($comment);
+
 		}
 	</script>
 </body>
