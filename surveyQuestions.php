@@ -50,7 +50,8 @@
 				var enString = $('[name=englishQuestion]',g)[0].value;
 				var arString = $('[name=arabicQuestion]',g)[0].value;
 				// console.log({ enQuestion:enString,arQuestion:arString,surveyId:surveyId});
-				questions.push({ enQuestion:enString,arQuestion:arString,surveyId:surveyId});
+				if (enString||arString) 
+					{questions.push({ enQuestion:enString,arQuestion:arString,surveyId:surveyId});}
 			});
 			console.log(questions);
 			// post to server  
@@ -68,6 +69,7 @@
 				success:function (response) {
 					console.log('success');
 					console.log(response);
+					location.reload();
 				}
 			});
 		}

@@ -20,12 +20,14 @@ class dbclient
 	}
 	function createNewQuestions($_questions)
 	{
+		$resultIds = [];
 		$questions = json_decode ($_questions,true);
 		foreach ($questions as $q) {
 			print_r($questions);
-			// echo $q['enQuestion'];
-			 $this->createquestion($q['enQuestion'],$q['arQuestion'], $q['surveyId'] );
+			$questionid = $this->createquestion($q['enQuestion'],$q['arQuestion'], $q['surveyId'] );
+			array_push($resultIds ,$questionid);
 		}
+		return $resultIds;
 	}
 	function getSurveyQuestionsAnsweres($surveyId){
 		$sql = "SELECT `id`, `answerString`, `questionId`, `surveyId` FROM `answers` WHERE `surveyId` ='".$surveyId."'";
@@ -67,7 +69,9 @@ class dbclient
 			$questionid = mysqli_insert_id($this->connection);
 			$this->createtypicalansweresforquetion($questionid,$surveyid);
 			//print_r($result);
+			return $questionid;
 		}
+
 	}
 
 	function createsurvey($title){
