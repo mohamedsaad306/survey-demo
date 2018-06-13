@@ -1,9 +1,9 @@
 
 todo 
 
-- submit answer logic.
 - display all created surveys 
 
+- submit answer logic. (done);
 - create new questions ui . (done);
 - create new questions submit to backend. (done);
 

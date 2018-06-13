@@ -18,6 +18,26 @@ class dbclient
 			die("database connection error: " . mysql_errno());
 		}
 	}
+	function getSurveyQuestionsResults($surveyId)
+	{
+		
+		$sql = "SELECT questions.questionStringEN, answers.answerString,answers.answerCount,questions.id as questionId FROM answers  INNER JOIN questions on questions.id =answers.questionId  WHERE answers.surveyId =".$surveyId;
+		 	
+		$result = mysqli_query($this->connection,$sql);
+		if (!$result) {
+			die("read faield" . mysqli_error($this->connection));
+		} else {
+			$results = array();
+			while ($row=$result->fetch_assoc())
+			{
+				array_push($results, $row);
+			 
+			}
+
+			return$results;
+			
+		}	
+	}
 	function getAllSurveyesList()
 	{
 		$sql = "SELECT * FROM `surveys` WHERE 1";

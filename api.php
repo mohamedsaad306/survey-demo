@@ -15,8 +15,8 @@ $controller->Dispatch();
 
  todo
 - 	 html craete survy 
--	 html results 
--	 cient html submit answers
+-	 html results s
+-	 cient html submit answers.
 
 */
 class apiController {
@@ -34,6 +34,7 @@ class apiController {
 	function Dispatch(){
 		if (isset($_GET["action"])) {
 			switch ($_GET["action"]) {
+				
 				case 'createSurvey':
 				$this->createsurvey();
 				break;
@@ -43,7 +44,6 @@ class apiController {
 				case 'GetSurveyData':
 				$this->GetSurveyData();
 				break;
-
 				case 'validatePrevouslySubmittedSurvey':
 				$this->validatePrevouslySubmittedSurvey();
 				break;
@@ -56,20 +56,31 @@ class apiController {
 				case 'submitClientAnswers':
 				$this->submitClientAnswers();
 				break;
-
+				
 				case 'getAllSurveyesList':
 				$this->getAllSurveyesList();
 				break;
-
+				case 'getSurveyQuestionsResults':
+				$this->getSurveyQuestionsResults();
+				break;
 				default:
 				break;	
 			}
 		}		 
 	}
+	function getSurveyQuestionsResults(){
+		
+		if(isset($_GET['surveyId'])){
+
+			$surveyId= $_GET['surveyId'];
+			$result = $this->dbClient->getSurveyQuestionsResults($surveyId);
+			JReturn($result);			
+		}
+	}
 	function getAllSurveyesList()
 	{
-			$result = $this->dbClient->getAllSurveyesList($_POST);
-			JReturn($result);
+		$result = $this->dbClient->getAllSurveyesList($_POST);
+		JReturn($result);
 	}
 	function submitClientAnswers()
 	{

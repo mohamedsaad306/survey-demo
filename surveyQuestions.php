@@ -11,12 +11,16 @@
 <body>
 	<br>
 	<div class="container ">
+	<ul class="nav nav-pills" role="tablist">
+				<li role="presentation" ><a href="./surveys.php" aria-controls="home" >Surveys </a></li>
+			</ul>
 		<div id="info">	
 		</div>
 		<div id="survey" data-id="" >
 			<h3 id="survey-name"> </h3>
 			<button id="add-question" class="btn btn-primary">Add Question</button>
 			<button id="save-survey" class="btn btn-primary">Save</button>
+			<button id="view-results" class="btn btn-primary">View Results </button>
 			<div id="questions" class="col-md-6">
 			</div>
 		</div>
@@ -33,9 +37,14 @@
 				$('#survey').data('surveyId',surveyid);
 			}
 			$("[data-deleteId]").click(deleteQuestion);
+			$("#view-results").click(openResults)
 		});// end ready 
 
-
+		function openResults () {
+			var surveyId= $('#survey').data('surveyId');
+			window.location.href="./survey_results.php?surveyId="+surveyId;
+			
+		  }
 		$('#save-survey').click(saveSurvey);
 		function saveSurvey() {
 			// get new questions
@@ -56,13 +65,13 @@
 			console.log(questions);
 			// post to server  
 			if (questions.length>0) 
-				craeteNewQuestions(questions);
+				createNewQuestions(questions);
 		}
 
-		function craeteNewQuestions(questions,successCallback) {
+		function createNewQuestions(questions,successCallback) {
 			var questions =JSON.stringify(questions) ;
 			var req = $.ajax({
-				url: "api.php?action=createNewQuestions",
+				url: "api.php?action=createNewQuestions",	
 				type: "POST",
 				data:{questions:questions},
 				async: false,

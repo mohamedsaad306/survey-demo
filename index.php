@@ -13,13 +13,9 @@ require_once("router.php");
 	<div class="container">
 		<br>
 		<div>
-
 			<!-- Nav tabs -->
 			<ul class="nav nav-pills" role="tablist">
 				<li role="presentation" ><a href="./surveys.php" aria-controls="home" >Surveys </a></li>
-				<li role="presentation"><a href="#profile" aria-controls="profile" >Profile</a></li>
-				<li role="presentation"><a href="#messages" aria-controls="messages" >Messages</a></li>
-				<li role="presentation"><a href="#settings" aria-controls="settings" >Settings</a></li>
 			</ul>
 
 		

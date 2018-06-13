@@ -24,7 +24,7 @@
 			</select> -->
 
 			<div class="panel" id="languagePanel" style="display: none;">
-				<h4>Sleect Language</h4>
+				<h4>Select Language</h4>
 				<button id="selectedLanguageBtnEN" type="button" class="btn btn-default" value="en">English</button>
 				<button id="selectedLanguageBtnAR"  type="button" class="btn btn-default" value="ar">العربية</button>
 			</div>
@@ -135,17 +135,7 @@ $('#languagePanel').css('display','block');
 			return result;
 		}
 
-		function getSurveyQuestions(surveyId){
-			var req = $.ajax({
-				url: "api.php?action=GetSurvey&surveyId="+surveyId,
-				type: "GET",
-				async: false,
-			}).responseText;
-			result = JSON.parse(req);
-			//result = (result.length>0);
-			console.log(result); 
-			return result;	
-		}
+		
 		function getSurveyQuestionsAnsweres(surveyId){
 			var req = $.ajax({
 				url: "api.php?action=getSurveyQuestionsAnsweres&surveyId="+surveyId,
