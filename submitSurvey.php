@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>Servey System</title>
 	<!-- <link href="css/bootstrap-Sandstone.min.css" rel="stylesheet" /> -->
 	<link href="css/bootstrap.css" rel="stylesheet" />
@@ -113,7 +114,7 @@
 					// set survey id data attribute for submit. 
 					$('#hiddenSurveyId').val(surveyId);
 					$('#hiddenClientId').val(clientId);
-$('#languagePanel').css('display','block');
+					$('#languagePanel').css('display','block');
 					renderQuestions(surveyQuestions,surveyAnsweres);
 				}
 			}
@@ -135,7 +136,17 @@ $('#languagePanel').css('display','block');
 			return result;
 		}
 
-		
+		function getSurveyQuestions(surveyId){
+			var req = $.ajax({
+				url: "api.php?action=GetSurvey&surveyid="+surveyId,
+				type: "GET",
+				async: false,
+			}).responseText;
+			result = JSON.parse(req);
+			//result = (result.length>0);
+			console.log(result); 
+			return result;	
+		}
 		function getSurveyQuestionsAnsweres(surveyId){
 			var req = $.ajax({
 				url: "api.php?action=getSurveyQuestionsAnsweres&surveyId="+surveyId,
@@ -243,9 +254,48 @@ $('#languagePanel').css('display','block');
 				$("#questions").append($question);
 			});
 			$comment= '<textarea class="form-control" rows="3" name="comment"></textarea>';
-				$("#questions").append($comment);
+			$("#questions").append($comment);
 
 		}
+
+		// function getSurveyQuestions(surveyid,successCallback){
+		// 	var result ; 
+
+		// 	var $form = $(this);
+		// 	var $inputs = $form.find("input, select, button, textarea");
+		// 	var serializedData = $form.serialize();
+		// 	$inputs.prop("disabled", true);
+
+		// 	request = $.ajax({
+		// 		url: "api.php?action=GetSurvey&surveyid="+surveyid,
+		// 		type: "GET",
+		// 		data: serializedData
+		// 	});
+
+
+		// 	request.done(function (response, textStatus, jqXHR){
+		// 	        // Log a message to the console
+		// 	       // console.log(response);
+		// 	        // alert(response);
+
+		// 	        result = response;
+		// 	        if (successCallback) {
+		// 	        	successCallback(result);
+		// 	        }
+		// 	    });
+
+		// 	request.fail(function (jqXHR, textStatus, errorThrown){
+		// 		console.error(
+		// 			"The following error occurred: "+textStatus, errorThrown	
+		// 			);
+		// 	});
+
+		// 	request.always(function () {
+		// 	        // Reenable the inputs
+		// 	        $inputs.prop("disabled", false);
+		// 	    });		
+		// 	return result;
+		// }
 	</script>
 </body>
 </html>

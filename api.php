@@ -64,6 +64,7 @@ class apiController {
 				$this->getSurveyQuestionsResults();
 				break;
 				default:
+				echo"v1.0";
 				break;	
 			}
 		}		 

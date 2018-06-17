@@ -18,8 +18,6 @@ require_once("router.php");
 				<li role="presentation" ><a href="./surveys.php" aria-controls="home" >Surveys </a></li>
 			</ul>
 
-		
-
 		</div>
 	</div>
 	<script src="./js/jquery-3.2.1.min.js">;</script>
