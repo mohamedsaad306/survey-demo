@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+	<!DOCTYPE HTML>
 <html>
 <head>
 	<!-- <link href="css/bootstrap.css" rel="stylesheet" /> -->
@@ -8,6 +8,13 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 	<link href="css/bootstrap.css" rel="stylesheet" />
 	
+
+<script src="js/popper.min.js"></script>
+
+
+<script src="js/bootstrap.min.js" ></script>
+
+
 	<script>
 		// window.onload = function () {
 
@@ -42,20 +49,30 @@
 		<ul class="nav nav-pills" role="tablist">
 			<li role="presentation" ><a href="./surveys.php" aria-controls="home" >Surveys </a></li>
 		</ul>
-		<!-- <div class="col-md-6 py-1">
-			<div class="card">
-				<div class="card-body">
-					<canvas id="chBar"></canvas>
-				</div>
-			</div>
-		</div> -->
-		<div id="survey" data-id="">
+		
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Results</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Comments</a></li>
+   
+  </ul>
+
 			<h3 id="survey-name"> </h3>
-		<!--<div id="chartContainer3" style="height: 300px; width: 100%;"></div>					
-			<div id="chartContainer" style="height: 300px; width: 100%;"></div>					
-			<div id="chartContainer2" style="height: 300px; width: 320px;"></div>
-		-->
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home"> 
+
+    	<div id="survey" data-id="">
+		<!-- chart results will appear here  -->
 	</div>
+	 </div>
+
+    <div role="tabpanel" class="tab-pane" id="profile">
+    	Comments ... 
+    </div>
+   
+  </div>
+
+
+	
 
 	<script type="text/javascript">
 		$(document).ready(function (){
@@ -69,9 +86,19 @@
 				$('#survey').data('surveyId',surveyId);
 				var surveyData = getSurveyData(surveyId,setSurveyData);
 				var surveyQuetions = getSurveyQuestionsResults(surveyId,RenderQuestionsResults);
+				var surveyComments  = getSurveyComments(surveyId,RenderComments);
 			}
 
 		});
+		function getSurveyComments(argument) {
+			// body...
+
+		}
+		function getSurveyComments(argument) {
+			// body...
+			
+		}
+
 		function getSurveyQuestionsResults(surveyId,callBack){
 			var result;
 			request = $.ajax({
@@ -194,4 +221,4 @@
 
 	</script>
 </body>
-</html>
+	</html>
