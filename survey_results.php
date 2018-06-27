@@ -17,7 +17,6 @@
 
 		<script>
 		// window.onload = function () {
-
 		// 	var options = {
 
 		// 		animationEnabled: true, 
@@ -39,7 +38,6 @@
 		// 	};
 		// 	$("#chartContainer").CanvasJSChart(options);
 		// 	$("#chartContainer2").CanvasJSChart(options);
-
 		// }
 	</script>
 

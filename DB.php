@@ -18,6 +18,28 @@ class dbclient
 			die("database connection error: " . mysql_errno());
 		}
 	}
+	function updateOldQuestions($_questions)
+	{
+
+		$questions = json_decode ($_questions,true);
+		
+		$sqlValues = "";
+		foreach ($questions as $q) {
+			$sqlValues .= "('".$q['questionId']."' ,'" .$q['enQuestion']. "' , '" . $q['arQuestion']. "'),";
+		}
+		$sqlValues=rtrim($sqlValues,",");
+
+		 $sql= "insert into questions (id,questionstringen,questionstringar) values ".$sqlValues." ON DUPLICATE KEY UPDATE  questionstringen= VALUES(questionstringen),questionstringar=VALUES(questionstringar);";
+
+		
+		$result = mysqli_query($this->connection,$sql);
+		if (!$result) {
+			//echo $sql;
+			die("insertion faield" . mysqli_error($this->connection));
+		} else {
+			return $sqlValues;
+		}
+	}
 
 	function getSurveyComments($surveyId)
 	{
@@ -135,6 +157,21 @@ class dbclient
 		}
 		return $resultIds;
 	}
+
+	// function createNewQuestions($_questions)
+	// {
+	// 	$resultIds = [];
+	// 	$questions = json_decode ($_questions,true);
+	// 	foreach ($questions as $q) {
+	// 		//print_r($questions);
+	// 		$this->createquestion($q['enQuestion'],$q['arQuestion'], $q['questionId'] );
+	// 		array_push($resultIds ,$questionid);
+	// 	}
+	// 	return $resultIds;
+	// }
+
+
+
 	function getSurveyQuestionsAnsweres($surveyId){
 		$sql = "SELECT `id`, `answerString`, `questionId`, `surveyId` FROM `answers` WHERE `surveyId` ='".$surveyId."'";
 		$result = mysqli_query($this->connection,$sql);

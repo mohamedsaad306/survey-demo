@@ -11,9 +11,9 @@
 <body>
 	<br>
 	<div class="container ">
-	<ul class="nav nav-pills" role="tablist">
-				<li role="presentation" ><a href="./surveys.php" aria-controls="home" >Surveys </a></li>
-			</ul>
+		<ul class="nav nav-pills" role="tablist">
+			<li role="presentation" ><a href="./surveys.php" aria-controls="home" >Surveys </a></li>
+		</ul>
 		<div id="info">	
 		</div>
 		<div id="survey" data-id="" >
@@ -44,28 +44,61 @@
 			var surveyId= $('#survey').data('surveyId');
 			window.location.href="./survey_results.php?surveyId="+surveyId;
 			
-		  }
+		}
 		$('#save-survey').click(saveSurvey);
 		function saveSurvey() {
 			// get new questions
 			// alert("save is clicked");
 			// console.log($('[data-newQuestion]'));
 
-			var questions = []; 
+			var newQuestions = []; 
+			var oldQuestions = []; 
 			
 			var surveyId= $('#survey').data('surveyId');
-			var groups = $('[data-newQuestion]');
-			groups.toArray().forEach(function(g){
+			
+			var newQuestionsgroups = $('[data-newQuestion]');
+			newQuestionsgroups.toArray().forEach(function(g){
 				var enString = $('[name=englishQuestion]',g)[0].value;
 				var arString = $('[name=arabicQuestion]',g)[0].value;
 				// console.log({ enQuestion:enString,arQuestion:arString,surveyId:surveyId});
 				if (enString||arString) 
-					{questions.push({ enQuestion:enString,arQuestion:arString,surveyId:surveyId});}
+					{newQuestions.push({ enQuestion:enString,arQuestion:arString,surveyId:surveyId});}
 			});
+
+			var oldQuestions= [];
+			var oldQuestionsgroups = $('[data-oldQuestion]');
+			oldQuestionsgroups.toArray().forEach(function(g){
+				console.log(g);
+				var enString = $('[name=englishQuestion] ',g)[0].value;
+				var arString = $('[name=arabicQuestion] ',g)[0].value;
+				var questionId = $('[name=id] ',g)[0].value;
+				// console.log({ enQuestion:enString,arQuestion:arString,surveyId:surveyId});
+				if (enString||arString) 
+					{oldQuestions.push({ enQuestion:enString,arQuestion:arString,surveyId:surveyId ,questionId:questionId});}
+			});
+
 			console.log(questions);
 			// post to server  
-			if (questions.length>0) 
-				createNewQuestions(questions);
+			if (newQuestions.length>0) 
+				createNewQuestions(newQuestions);
+
+			if (oldQuestions.length>0) 
+				updateOldQuestions(oldQuestions);
+		}
+
+		function updateOldQuestions(questions) {
+			var questions =JSON.stringify(questions) ;
+			var req = $.ajax({
+				url: "api.php?action=updateOldQuestions",	
+				type: "POST",
+				data:{questions:questions},
+				async: false,
+				success:function (response) {
+					console.log('update success');
+					console.log(response);
+					//location.reload();
+				}
+			});
 		}
 
 		function createNewQuestions(questions,successCallback) {
@@ -128,16 +161,16 @@
 
 			questionsArray.forEach(function(q){
 				console.log(q);
-				$question = `<div class=" well">
+				$question = `<div class=" well" data-oldQuestion>
 				<div class="form-group">
-
+				<input type="hidden" name="id" value="`+q['id']+`">
 				<label for="englishQuestion-`+q['id']+`">English Question </label>
-				<input type="text" class="form-control" id="englishQuestion-`+q['id']+`" value="`+q['questionstringen']+`"  name="englishQuestion" data-id="`+q['id']+`">
+				<input data-editable= "true" type="text" class="form-control" id="englishQuestion-`+q['id']+`" value="`+q['questionstringen']+`"  name="englishQuestion" data-id="`+q['id']+`">
 				</div>
 
 				<div class="form-group">
 				<label for="arabicQuestion-`+q['id']+`">Arabic Question</label>
-				<input type="text" class="form-control" id="arabicQuestion-`+q['id']+`" placeholder="English Question" name="arabicQuestion" data-id="`+q['id']+`"  value="`+q['questionstringar']+`">
+				<input data-editable= "true" type="text" class="form-control" id="arabicQuestion-`+q['id']+`" placeholder="English Question" name="arabicQuestion" data-id="`+q['id']+`"  value="`+q['questionstringar']+`">
 				</div>
 				<span class="btn btn-danger" data-deleteId="`+q['id']+`">Remove </span>
 				</div	>`;

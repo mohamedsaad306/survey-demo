@@ -66,12 +66,26 @@ class apiController {
 				case 'getSurveyComments':
 				$this->getSurveyComments();
 				break;
+
+				case 'updateOldQuestions':
+				$this->updateOldQuestions();
+				break;
 				default:
 				echo"v1.0";
 				break;	
 			}
 		}		 
 	}
+	function updateOldQuestions()
+	{
+		if (isset($_POST['questions'])) {
+			//print_r($_POST['questions']);
+			$result = $this->dbClient->updateOldQuestions($_POST['questions']);
+			JReturn($result);
+		}
+	}
+
+
 	function getSurveyComments()
 	{
 		if (isset($_GET['surveyId'])) {
