@@ -145,6 +145,17 @@
 			console.log(questionIdToRemove); 
 			if (questionIdToRemove!="") {
 				if (confirm("Please note that all related answeres will be delete, are you sure you sure you want to delete ?")) {
+					var req = $.ajax({
+						url: "api.php?action=deleteQuestion",	
+						type: "POST",
+						data:{question:questionIdToRemove},
+						async: false,
+						success:function (response) {
+							console.log('deleted');
+							console.log(response);
+							location.reload();
+						}
+					});
 					$(this).parent().remove();
 				}
 

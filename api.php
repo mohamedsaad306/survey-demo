@@ -70,11 +70,23 @@ class apiController {
 				case 'updateOldQuestions':
 				$this->updateOldQuestions();
 				break;
+				case 'deleteQuestion':
+				$this->deleteQuestion();
+				break;
 				default:
 				echo"v1.0";
 				break;	
 			}
 		}		 
+	}
+	function deleteQuestion()
+	{
+		# code...
+	if (isset($_POST['question'])) {
+			//print_r($_POST['questions']);
+			$result = $this->dbClient->deleteQuestion($_POST['question']);
+			JReturn($result);
+		}	
 	}
 	function updateOldQuestions()
 	{

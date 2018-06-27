@@ -18,6 +18,22 @@ class dbclient
 			die("database connection error: " . mysql_errno());
 		}
 	}
+	function deleteQuestion($_questionId)
+	{
+		// $question = json_decode ($_questionId,true);
+		$sql = "DELETE FROM `questions` WHERE `id` = ".$_questionId;
+		$sql2 = "DELETE FROM `answers` WHERE `questionId`".$_questionId;
+		
+		$result1 = mysqli_query($this->connection,$sql);
+		$result2 = mysqli_query($this->connection,$sql2);
+		
+		if (!$result || !$result2) {
+			//echo $sql;
+			die("insertion faield ".$_questionId." __" . mysqli_error($this->connection));
+		} else {
+			return $sqlValues;
+		}
+	}
 	function updateOldQuestions($_questions)
 	{
 
@@ -29,7 +45,7 @@ class dbclient
 		}
 		$sqlValues=rtrim($sqlValues,",");
 
-		 $sql= "insert into questions (id,questionstringen,questionstringar) values ".$sqlValues." ON DUPLICATE KEY UPDATE  questionstringen= VALUES(questionstringen),questionstringar=VALUES(questionstringar);";
+		$sql= "insert into questions (id,questionstringen,questionstringar) values ".$sqlValues." ON DUPLICATE KEY UPDATE  questionstringen= VALUES(questionstringen),questionstringar=VALUES(questionstringar);";
 
 		
 		$result = mysqli_query($this->connection,$sql);
