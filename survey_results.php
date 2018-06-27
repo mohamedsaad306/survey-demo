@@ -1,21 +1,21 @@
 	<!DOCTYPE HTML>
-<html>
-<head>
-	<!-- <link href="css/bootstrap.css" rel="stylesheet" /> -->
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/utils.js"></script>
-	<script src="js/jquery.canvasjs.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-	<link href="css/bootstrap.css" rel="stylesheet" />
-	
-
-<script src="js/popper.min.js"></script>
+	<html>
+	<head>
+		<!-- <link href="css/bootstrap.css" rel="stylesheet" /> -->
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/utils.js"></script>
+		<script src="js/jquery.canvasjs.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+		<link href="css/bootstrap.css" rel="stylesheet" />
 
 
-<script src="js/bootstrap.min.js" ></script>
+		<script src="js/popper.min.js"></script>
 
 
-	<script>
+		<script src="js/bootstrap.min.js" ></script>
+
+
+		<script>
 		// window.onload = function () {
 
 		// 	var options = {
@@ -50,53 +50,87 @@
 			<li role="presentation" ><a href="./surveys.php" aria-controls="home" >Surveys </a></li>
 		</ul>
 		
-<ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Results</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Comments</a></li>
-   
-  </ul>
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Results</a></li>
+			<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Comments</a></li>
 
-			<h3 id="survey-name"> </h3>
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="home"> 
+		</ul>
 
-    	<div id="survey" data-id="">
-		<!-- chart results will appear here  -->
-	</div>
-	 </div>
+		<h3 id="survey-name"> </h3>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home"> 
 
-    <div role="tabpanel" class="tab-pane" id="profile">
-    	Comments ... 
-    </div>
-   
-  </div>
+				<div id="survey" data-id="">
+					<!-- chart results will appear here  -->
+				</div>
+			</div>
+
+			<div role="tabpanel" class="tab-pane" id="profile">
+
+				<table id="comments-table"  class="table table-condensed">
+					<tr>
+						<th>User</th>
+						<th>Comment </th>
+					</tr>
+				</table>
+			</div>
+
+		</div>
 
 
-	
-
-	<script type="text/javascript">
-		$(document).ready(function (){
-			var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
 
 
-			var surveyId = getParameterByName('surveyId');
-			console.log(surveyId);
+		<script type="text/javascript">
+			$(document).ready(function (){
+				var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
 
-			if (surveyId) {
-				$('#survey').data('surveyId',surveyId);
-				var surveyData = getSurveyData(surveyId,setSurveyData);
-				var surveyQuetions = getSurveyQuestionsResults(surveyId,RenderQuestionsResults);
-				var surveyComments  = getSurveyComments(surveyId,RenderComments);
+
+				var surveyId = getParameterByName('surveyId');
+				console.log(surveyId);
+
+				if (surveyId) {
+					$('#survey').data('surveyId',surveyId);
+					var surveyData = getSurveyData(surveyId,setSurveyData);
+					var surveyQuetions = getSurveyQuestionsResults(surveyId,RenderQuestionsResults);
+					var surveyComments  = getSurveyComments(surveyId,RenderComments);
+				}
+
+			});
+			function RenderComments(data) {
+				console.log("D",data);
+				if (data  && data.length>0) {
+
+					data.forEach(function (comment) {
+					// body...
+					if (comment['comment']!="") {
+						$row = 
+					`<tr> 
+					<td>`+comment['userId']+`</td>
+					<td>`+comment['comment']+`</td>
+					</tr>`;
+					$('#comments-table').append($row);
+					}
+				});
+				}
 			}
 
-		});
-		function getSurveyComments(argument) {
+			function getSurveyComments(surveyId,callBack) {
 			// body...
+			var result;
+			request = $.ajax({
+				url: "api.php?action=getSurveyComments&surveyId="+surveyId,
+				type: "GET",
+				success:function(response){
+					// console.log(JSON.parse(response));
+					if (callBack) {
+						callBack(JSON.parse(response));
+					}
+				},
+				error:function(e){
+					console.error("Error getSurveyComments: ",e);
+				}
 
-		}
-		function getSurveyComments(argument) {
-			// body...
-			
+			});
 		}
 
 		function getSurveyQuestionsResults(surveyId,callBack){
@@ -221,4 +255,4 @@
 
 	</script>
 </body>
-	</html>
+</html>

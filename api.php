@@ -63,11 +63,21 @@ class apiController {
 				case 'getSurveyQuestionsResults':
 				$this->getSurveyQuestionsResults();
 				break;
+				case 'getSurveyComments':
+				$this->getSurveyComments();
+				break;
 				default:
 				echo"v1.0";
 				break;	
 			}
 		}		 
+	}
+	function getSurveyComments()
+	{
+		if (isset($_GET['surveyId'])) {
+			$surveyId= $_GET['surveyId'];
+			$result = JReturn($this->dbClient->getSurveyComments($surveyId));
+		}
 	}
 	function getSurveyQuestionsResults(){
 		

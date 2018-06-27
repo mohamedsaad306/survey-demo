@@ -18,11 +18,12 @@ class dbclient
 			die("database connection error: " . mysql_errno());
 		}
 	}
-	function getSurveyQuestionsResults($surveyId)
+
+	function getSurveyComments($surveyId)
 	{
 		
-		$sql = "SELECT questions.questionStringEN, answers.answerString,answers.answerCount,questions.id as questionId FROM answers  INNER JOIN questions on questions.id =answers.questionId  WHERE answers.surveyId =".$surveyId;
-		 	
+		$sql = "SELECT `userId`, `comment` FROM `usersanswers` WHERE `surveyId` = ".$surveyId;
+
 		$result = mysqli_query($this->connection,$sql);
 		if (!$result) {
 			die("read faield" . mysqli_error($this->connection));
@@ -31,11 +32,30 @@ class dbclient
 			while ($row=$result->fetch_assoc())
 			{
 				array_push($results, $row);
-			 
+
+			}
+			return$results;
+		}
+	}
+
+	function getSurveyQuestionsResults($surveyId)
+	{
+
+		$sql = "SELECT questions.questionStringEN, answers.answerString,answers.answerCount,questions.id as questionId FROM answers  INNER JOIN questions on questions.id =answers.questionId  WHERE answers.surveyId =".$surveyId;
+
+		$result = mysqli_query($this->connection,$sql);
+		if (!$result) {
+			die("read faield" . mysqli_error($this->connection));
+		} else {
+			$results = array();
+			while ($row=$result->fetch_assoc())
+			{
+				array_push($results, $row);
+
 			}
 
 			return$results;
-			
+
 		}	
 	}
 	function getAllSurveyesList()
@@ -56,7 +76,7 @@ class dbclient
 	function submitClientAnswers($postData){
 		// $data = json_decode($postData,true);
 		$data =$postData;
-		
+
 		$clientId; 
 		$surveyId;
 		$comment;
@@ -94,7 +114,7 @@ class dbclient
 		$sql = "UPDATE `answers` SET `answerCount`=`answerCount`+1 WHERE  `questionId` = '".$questionId."' and `id` =".$answerId."";
 
 		$result = mysqli_query($this->connection,$sql);
-		
+
 		if (!$result) {
 			//echo ;
 			die($sql."__". mysqli_error($this->connection));
@@ -161,10 +181,10 @@ class dbclient
 	}
 
 	function createsurvey($title){
-		
+
 		$query = "insert into `surveys`( `name`, `ispublished`) values ( '".$title."' ,'1')";
 		$result = mysqli_query($this->connection,$query);
-		
+
 		if (!$result) {
 			die("insertion faield" . mysqli_error($this->connection));
 		} else {
@@ -175,7 +195,7 @@ class dbclient
 
 	function createtypicalansweresforquetion ($questionid,$surveyid){
 		$query = "insert into `answers`(`answerstring`, `questionid`, `surveyid`) values ('very good','".$questionid."','".$surveyid."'),('good','".$questionid."','".$surveyid."'),('fair','".$questionid."','".$surveyid."'),('poor','".$questionid."','".$surveyid."'),('very poor','".$questionid."','".$surveyid."')";
-		
+
 		$result = mysqli_query($this->connection,$query);
 		if (!$result) {
 			die("insertion faield" . mysqli_error($this->connection));
