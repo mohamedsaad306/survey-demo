@@ -1,0 +1,55 @@
+{
+    "List": [
+        {
+            "BuildingTypes": [
+                {
+                    "BuildingTybe": 3,
+                    "Buildings": [
+                        {
+                            "Floors": [
+                                {
+                                    "Id": "4be7dffa-5e83-e811-8334-000d3a24bd44",
+                                    "Locations": [
+                                        {
+                                            "Area": 1221,
+                                            "Id": "45c989bc-6383-e811-8334-000d3a24bd44",
+                                            "Name": "TEST.Unit 0",
+                                            "Number": "0"
+                                        }
+                                    ],
+                                    "Number": "111"
+                                }
+                            ],
+                            "Id": "d8a8be15-2cba-e611-80d0-00155d642d29",
+                            "Name": "Al Razi Building - 64",
+                            "Number": "64"
+                        }
+                    ],
+                    "Name": "Building",
+                    "Plots": null
+                },
+                {
+                    "BuildingTybe": 4,
+                    "Buildings": null,
+                    "Name": "Plot",
+                    "Plots": [
+                        {
+                            "Area": 346037,
+                            "Id": "7dbb3da3-4b79-e811-80e3-00155d644109",
+                            "Name": "A/P 13a",
+                            "Number": "A/P 13a"
+                        }
+                    ]
+                }
+            ],
+            "Phase": 1,
+            "PhaseName": "One"
+        }
+    ],
+    "ResponseMessage": {
+        "InternalMessage": "Success",
+        "Message": [],
+        "MessageCode": 1,
+        "MessageWithStatus": null
+    }
+}
